@@ -7,7 +7,7 @@ import QuoteText from "./QuoteText";
 function App() {
   const [quote, setQuote] = useState("");
   const [author, setAuthor] = useState("");
-  const [clicked, setClick] = useState([false, "black"]);
+  const [clicked, setClick] = useState([false, "#2c3142"]);
 
   useEffect(() => {
     const fetchData = async () => {
