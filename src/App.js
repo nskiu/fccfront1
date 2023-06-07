@@ -7,7 +7,7 @@ import QuoteText from "./QuoteText";
 function App() {
   const [quote, setQuote] = useState("");
   const [author, setAuthor] = useState("");
-  const [clicked, setClick] = useState([false, "#2c3142"]);
+  const [change, setChange] = useState({ clicked: false, color: "#2c3142" });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,14 +17,18 @@ function App() {
       setAuthor(data.author);
     };
     fetchData();
-  }, [clicked]);
+  }, [change.clicked]);
 
   const handleClick = () => {
-    setClick((clicked) => {
-      return [
-        !clicked[0],
-        "#" + Math.floor(Math.random() * 16777215).toString(16),
-      ];
+    const random = (max) => Math.floor(Math.random() * max + 1);
+    const hue = random(360);
+    const saturation = random(100);
+    const brightness = random(60);
+    setChange(() => {
+      return {
+        clicked: !change.clicked,
+        color: `hsl(${hue}, ${saturation}%, ${brightness}%)`,
+      };
     });
     document.getElementById("quote").style.opacity = 0;
 
@@ -35,12 +39,12 @@ function App() {
 
   return (
     <div id="quote-box" className="d-flex flex-column rounded">
-      <script>{(document.body.style.background = clicked[1])}</script>
-      <QuoteText quote={quote} color={clicked[1]} />
-      <QuoteAuthor author={author} color={clicked[1]} />
+      <script>{(document.body.style.background = change.color)}</script>
+      <QuoteText quote={quote} color={change.color} />
+      <QuoteAuthor author={author} color={change.color} />
       <Buttons
         onClick={handleClick}
-        color={clicked[1]}
+        color={change.color}
         quote={quote}
         author={author}
       />
